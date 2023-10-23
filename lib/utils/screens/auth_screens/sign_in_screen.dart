@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meditransparency/data/constants/styles.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
 import 'package:meditransparency/data/constants/colors.dart';
@@ -16,12 +17,28 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   bool _passwordVisible = true;
   bool _isloading = false;
   var _errmsg = '';
   var _iserr = false;
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+      if (_googleSignIn.currentUser != null) {
+        print('User Data:');
+        print('Display Name: ${_googleSignIn.currentUser!.displayName}');
+        print('Email: ${_googleSignIn.currentUser!.email}');
+        print('Photo URL: ${_googleSignIn.currentUser!.photoUrl}');
+      }
+    } catch (error) {
+      print('Error signing in: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,19 +63,19 @@ class _SignInScreenState extends State<SignInScreen> {
               text("Sign in using your phone number or by a given social login",
                   ui.greyclr, 15, FontWeight.w500,
                   align: TextAlign.center),
-              _iserr? SizedBox(
-                height: 30,
-              ): SizedBox(
-                height: 0,
-              ),
-              text(_errmsg,
-                  ui.errclr, 15, FontWeight.w500,
+              _iserr
+                  ? SizedBox(
+                      height: 30,
+                    )
+                  : SizedBox(
+                      height: 0,
+                    ),
+              text(_errmsg, ui.errclr, 15, FontWeight.w500,
                   align: TextAlign.center),
               SizedBox(
                 height: 25,
               ),
               Row(
-                
                 children: [
                   text(
                     "Phone Number",
@@ -69,15 +86,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical:8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: SizedBox(
-                  height: 50,
-                  child: Inputnumfield('', context, (){
-              
-                  },
-                  controller:_phoneController,
-                  autofocus: true)
-                ),
+                    height: 50,
+                    child: Inputnumfield('', context, () {},
+                        controller: _phoneController, autofocus: true)),
               ),
               SizedBox(
                 height: 10,
@@ -93,15 +106,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical:8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: SizedBox(
                   height: 50,
-                  child: Inputpassfield(
-                              'Password', _passwordVisible, context, () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          }, controller: _passwordController),
+                  child:
+                      Inputpassfield('Password', _passwordVisible, context, () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  }, controller: _passwordController),
                 ),
               ),
               SizedBox(
@@ -158,8 +171,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/svgs/google.svg',
+                    InkWell(
+                      child: SvgPicture.asset(
+                        'assets/svgs/google.svg',
+                      ),
+                      onTap: () {
+                        _handleSignIn();
+                      },
                     ),
                     SizedBox(
                       width: 10,
@@ -189,7 +207,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         FontWeight.w500,
                       ),
                       onTap: () {
-                        final snackBar = SnackBar(content:Text('Signup is not Allowed for Doctors'));
+                        final snackBar = SnackBar(
+                            content: Text('Signup is not Allowed for Doctors'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                     )
