@@ -13,7 +13,7 @@ class Termsofuse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:ui.blackclr,
+        backgroundColor:ui.primaryclr,
         // centerTitle: true,
         title: Text(
           'Terms of Use',

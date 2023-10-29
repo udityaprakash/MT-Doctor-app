@@ -35,7 +35,7 @@ Widget nextorcontinuebtn({tex, function, style, context}) {
   return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       // height: 50,
-      width: size.width,
+      width: double.infinity,
       child: ElevatedButton(
         style: style,
         onPressed: function,
@@ -45,28 +45,30 @@ Widget nextorcontinuebtn({tex, function, style, context}) {
 }
 
 Widget buttongenerator(String quote, BuildContext context, function) {
-  return ElevatedButton(
-    onPressed: function,
-    style: ElevatedButton.styleFrom(
-      primary: ui.primaryclr,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        // side: const BorderSide(
-        //     color: Colors.white),
+  return Expanded(
+    child: ElevatedButton(
+      onPressed: function,
+      style: ElevatedButton.styleFrom(
+        primary: ui.primaryclr,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          // side: const BorderSide(
+          //     color: Colors.white),
+        ),
       ),
-    ),
-    child: Center(
-      child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.007),
-        child: Text(
-          quote,
-          style: TextStyle(
-              letterSpacing: 1,
-              color: Colors.white,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              // fontVariations: <FontVariation>[FontVariation('wght', 700)],
-              fontSize: MediaQuery.of(context).size.width / 22),
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.007),
+          child: Text(
+            quote,
+            style: TextStyle(
+                letterSpacing: 1,
+                color: Colors.white,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.bold,
+                // fontVariations: <FontVariation>[FontVariation('wght', 700)],
+                fontSize: MediaQuery.of(context).size.width / 22),
+          ),
         ),
       ),
     ),

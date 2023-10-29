@@ -12,7 +12,7 @@ class privacy_policy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ui.blackclr,
+        backgroundColor: ui.primaryclr,
         // centerTitle: true,
         title: Text(
           'Privacy Policy',
