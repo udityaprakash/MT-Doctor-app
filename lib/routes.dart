@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meditransparency/utils/screens/auth_screens/sign_in_screen.dart';
+import 'package:meditransparency/utils/screens/homescreens/listofhospitals.dart';
 import 'package:meditransparency/utils/screens/intro_screen.dart';
 import 'package:meditransparency/utils/screens/splash_screen.dart';
 import 'package:meditransparency/utils/screens/termsandpolicy/privacypolicy.dart';
@@ -27,7 +28,10 @@ class CustomRoute {
         case '/termsofuse':
           return Termsofuse();
         case "/login":
-          return SignInScreen();  
+          return SignInScreen();
+        case "/choosehospital":
+          return listhospitals(); 
+          
         case "signinscreen":
           // ignore: prefer_const_constructors
           return SignInScreen();

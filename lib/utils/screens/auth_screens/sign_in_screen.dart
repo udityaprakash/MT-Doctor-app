@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meditransparency/data/constants/styles.dart';
+import 'package:meditransparency/data/dataflow/devicestorage.dart';
+import 'package:meditransparency/data/dataflow/models/loginmodel.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/utils/widgets/inputfields/inputtextfield.dart';
 
+import '../../../data/dataflow/integration_apis.dart';
 import '../../widgets/inputfields/inputpassfield.dart';
 import '../../widgets/reusable_text.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../widgets/toastmsg.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -33,6 +38,10 @@ class _SignInScreenState extends State<SignInScreen> {
         print('Display Name: ${_googleSignIn.currentUser!.displayName}');
         print('Email: ${_googleSignIn.currentUser!.email}');
         print('Photo URL: ${_googleSignIn.currentUser!.photoUrl}');
+        setState(() {
+          _iserr = true;
+          _errmsg = _googleSignIn.currentUser!.email;
+        });
       }
     } catch (error) {
       print('Error signing in: $error');
@@ -134,19 +143,55 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(
                 height: 30,
               ),
-              nextorcontinuebtn(
-                  context: context,
-                  tex: 'Next',
-                  style: fontstyles().style,
-                  function: () {
-                    if (RegExp(r'^[0-9]{10}$')
-                            .hasMatch(_phoneController.text) &&
-                        _passwordController.text.length >= 6) {
-                      // Process data
-                      print('Phone Number: ${_phoneController.text}');
-                      print('Password: ${_passwordController.text}');
-                    }
-                  }),
+              _isloading
+                  ? CircularProgressIndicator()
+                  : nextorcontinuebtn(
+                      context: context,
+                      tex: 'Next',
+                      style: fontstyles().style,
+                      function: () async {
+                        if (RegExp(r'^[0-9]{10}$')
+                                .hasMatch(_phoneController.text) &&
+                            _passwordController.text.length >= 6) {
+                          // Process data
+                          _errmsg = '';
+                          _iserr = false;
+                          _isloading = true;
+                          setState(() {});
+                          final response = await login_in(
+                              _phoneController.text, _passwordController.text);
+                          // print("response is :" + response.toString());
+                          if (response['success'] == false) {
+                            setState(() {
+                              _isloading = false;
+                              _errmsg = response['msg'];
+                              _iserr = true;
+                            });
+                            // Toastmsg(msg: response['msg']);
+                          } else {
+                            LoginResponse loginResponse =
+                                LoginResponse.fromJson(response);
+                            StorageManager.saveData(
+                                'token', loginResponse.token);
+                            StorageManager.readData('token')
+                                .then((value){
+
+                                print("stored token was :"+value);
+                                Navigator.pushReplacementNamed(context, '/choosehospital');
+                                });
+                          }
+                          _isloading = false;
+                          setState(() {});
+                          // print('Phone Number: ${_phoneController.text}');
+                          // print('Password: ${_passwordController.text}');
+                          // setState(() {});
+                        } else {
+                          _errmsg =
+                              'Password too short or Invalid Phone Number';
+                          _iserr = true;
+                          setState(() {});
+                        }
+                      }),
               Padding(
                 padding: const EdgeInsets.only(top: 45.0),
                 child: Row(children: <Widget>[
