@@ -13,12 +13,14 @@ import 'package:http/http.dart' as http;
 class Hospital {
   final String imgUrl;
   final String name;
+  final String hospitalid;
 
-  Hospital({required this.imgUrl, required this.name});
+  Hospital({required this.imgUrl, required this.hospitalid, required this.name});
 
   factory Hospital.fromJson(Map<String, dynamic> json) {
     return Hospital(
       imgUrl: json['imgurl'],
+      hospitalid: json['hospital_id'],
       name: json['name'],
     );
   }
@@ -90,76 +92,78 @@ class _listhospitalsState extends State<listhospitals> {
                     height: 20,
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        log("start");
-                      },
-                      child: FutureBuilder<List<Hospital>>(
-                        future: ApiService.getHospitalDetails(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<Hospital>? data = snapshot.data;
-                            return ListView.builder(
-                              itemCount: data!.length,
-                              itemBuilder: (context, index) {
-                                hospitals.add(data[index].name);
-                                return InkWell(
-                                  onTap: () {
-                                    selectedindex = index;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    // color: Colors.red,
-                                    margin: EdgeInsets.all(10),
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      // color: const Color.fromARGB(255, 219, 27, 27),
-                                      border: (selectedindex == index)
-                                          ? Border.all(
-                                              color: ui.primaryclr, width: 2)
-                                          : Border.all(color: ui.greyclr),
-                                    ),
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // CachedNetworkImage(imageUrl: imageUrl),
-                                          CircleAvatar(
-                                            radius: 31,
-                                            backgroundColor: ui.greyclr,
-                                            child: CircleAvatar(
-                                              radius: 30,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                data[index].imgUrl,
-                                              ),
+                    child: FutureBuilder<List<Hospital>>(
+                      future: ApiService.getHospitalDetails(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<Hospital>? data = snapshot.data;
+                          return ListView.builder(
+                            itemCount: data!.length,
+                            itemBuilder: (context, index) {
+                              hospitals.add(data[index].hospitalid);
+                              return InkWell(
+                                onTap: () {
+                                  selectedindex = index;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  // color: Colors.red,
+                                  margin: EdgeInsets.all(10),
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    // color: const Color.fromARGB(255, 219, 27, 27),
+                                    border: (selectedindex == index)
+                                        ? Border.all(
+                                            color: ui.primaryclr, width: 2)
+                                        : Border.all(color: ui.greyclr),
+                                  ),
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(10),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        // CachedNetworkImage(imageUrl: imageUrl),
+                                        CircleAvatar(
+                                          radius: 31,
+                                          backgroundColor: ui.greyclr,
+                                          child: CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                              data[index].imgUrl,
                                             ),
                                           ),
-                                          textgenerator(
-                                              (data[index].name).toUpperCase(),
-                                              15,
-                                              'Lato',
-                                              300,
-                                              ui.blackclr),
-                                          SizedBox(
-                                            width: 5,
-                                          )
-                                        ]),
-                                  ),
-                                );
-                              },
-                            );
-                          } else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      ),
+                                        ),
+                                        textgenerator(
+                                            (data[index].name).toUpperCase(),
+                                            15,
+                                            'Lato',
+                                            300,
+                                            ui.blackclr),
+                                        SizedBox(
+                                          width: 5,
+                                        )
+                                      ]),
+                                ),
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        } else {
+                          return Column(
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
+                              Container(
+                                height: 40,
+                                width: 40,
+                                child: CircularProgressIndicator()),
+                            ],
+                          );
+                        }
+                      },
                     ),
                   ),
                 ]),
@@ -176,8 +180,8 @@ class _listhospitalsState extends State<listhospitals> {
             } else {
               print(hospitals[selectedindex]);
               StorageManager.saveData(
-                  'hospital_selected', hospitals[selectedindex]);
-              StorageManager.readData('hospital_selected').then((value){
+                  'current_hospital_id', hospitals[selectedindex]);
+              StorageManager.readData('current_hospital_id').then((value){
                 print("stored token was :"+value);
                 Navigator.pushReplacementNamed(context, '/choosepatient');
               });
