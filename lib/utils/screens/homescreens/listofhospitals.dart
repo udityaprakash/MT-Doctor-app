@@ -97,61 +97,66 @@ class _listhospitalsState extends State<listhospitals> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List<Hospital>? data = snapshot.data;
-                          return ListView.builder(
-                            itemCount: data!.length,
-                            itemBuilder: (context, index) {
-                              hospitals.add(data[index].hospitalid);
-                              return InkWell(
-                                onTap: () {
-                                  selectedindex = index;
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  // color: Colors.red,
-                                  margin: EdgeInsets.all(10),
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    // color: const Color.fromARGB(255, 219, 27, 27),
-                                    border: (selectedindex == index)
-                                        ? Border.all(
-                                            color: ui.primaryclr, width: 2)
-                                        : Border.all(color: ui.greyclr),
-                                  ),
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        // CachedNetworkImage(imageUrl: imageUrl),
-                                        CircleAvatar(
-                                          radius: 31,
-                                          backgroundColor: ui.greyclr,
-                                          child: CircleAvatar(
-                                            radius: 30,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                              data[index].imgUrl,
+                          if(snapshot.data!.isNotEmpty){
+                            return ListView.builder(
+                              itemCount: data!.length,
+                              itemBuilder: (context, index) {
+                                hospitals.add(data[index].hospitalid);
+                                return InkWell(
+                                  onTap: () {
+                                    selectedindex = index;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    // color: Colors.red,
+                                    margin: EdgeInsets.all(10),
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      // color: const Color.fromARGB(255, 219, 27, 27),
+                                      border: (selectedindex == index)
+                                          ? Border.all(
+                                              color: ui.primaryclr, width: 2)
+                                          : Border.all(color: ui.greyclr),
+                                    ),
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(10),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          // CachedNetworkImage(imageUrl: imageUrl),
+                                          CircleAvatar(
+                                            radius: 31,
+                                            backgroundColor: ui.greyclr,
+                                            child: CircleAvatar(
+                                              radius: 30,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                data[index].imgUrl,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        textgenerator(
-                                            (data[index].name).toUpperCase(),
-                                            15,
-                                            'Lato',
-                                            300,
-                                            ui.blackclr),
-                                        SizedBox(
-                                          width: 5,
-                                        )
-                                      ]),
-                                ),
-                              );
-                            },
-                          );
+                                          textgenerator(
+                                              (data[index].name).toUpperCase(),
+                                              15,
+                                              'Lato',
+                                              300,
+                                              ui.blackclr),
+                                          SizedBox(
+                                            width: 5,
+                                          )
+                                        ]),
+                                  ),
+                                );
+                              },
+                            );
+
+                          }else{
+                            return Center(child: textgenerator('No hospitals to list', 15 , 'Lato', 300, ui.primarylightclr));
+                          }
                         } else if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
+                          return textgenerator('${snapshot.error}', 15 , 'Lato', 300, ui.primarylightclr);
                         } else {
                           return Column(
                             children: [
@@ -182,7 +187,7 @@ class _listhospitalsState extends State<listhospitals> {
               StorageManager.saveData(
                   'current_hospital_id', hospitals[selectedindex]);
               StorageManager.readData('current_hospital_id').then((value){
-                print("stored token was :"+value);
+                print("stored hospital id was :"+value);
                 Navigator.pushReplacementNamed(context, '/choosepatient');
               });
             }
