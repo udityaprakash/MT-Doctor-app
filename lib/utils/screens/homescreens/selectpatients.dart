@@ -7,95 +7,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/data/dataflow/devicestorage.dart';
+import 'package:meditransparency/data/dataflow/integration_apis.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 import 'package:http/http.dart' as http;
+import 'package:meditransparency/utils/widgets/toastmsg.dart';
 import '../../widgets/reusable_text.dart';
-
-class Patient {
-  final String imgUrl;
-  final String name;
-  final String patientId;
-  final String gender;
-  final int age;
-  final String registeredOn;
-
-  Patient(
-      {required this.imgUrl,
-      required this.name,
-      required this.patientId,
-      required this.gender,
-      required this.age,
-      required this.registeredOn});
-}
-
-class PatientService {
-  // static const String token = 'YOUR_TOKEN_HERE';
-  static const String url =
-      'https://meditransparency.onrender.com/doctor/patients';
-  // String? token = 
-  //   log("doctor token is :" + token);
-  //   log("selected hospital is: " + selhospital);    
-
-  static Future<List<Patient>> getPatients() async {
-    String? token = (await StorageManager.readData('token')).toString();
-    String? hospitalId = (await StorageManager.readData('current_hospital_id')).toString();
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
-      body: jsonEncode(<String, String>{'hospitalid': hospitalId}),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      if (data['success'] == true) {
-        List<Patient> patients = [];
-        for (var patientData in data['patientsinfo']) {
-          patients.add(Patient(
-            imgUrl: patientData['imgurl'],
-            name: patientData['name'],
-            patientId: patientData['patientid'],
-            gender: patientData['gender'],
-            age: patientData['age'],
-            registeredOn: patientData['registeredon'],
-          ));
-        }
-        return patients;
-      } else {
-        throw Exception('Failed to load patients');
-      }
-    } else {
-      throw Exception('Failed to load patients');
-    }
-  }
-}
-
-class ApiService {
-  static Future<List<Patient>> getPatientsDetail() async {
-    String? token = (await StorageManager.readData('token')).toString();
-    log("doctor token is :" + token);
-    String? selhospital =
-        (await StorageManager.readData('current_hospital_id')).toString();
-    log("selected hospital is: " + selhospital);
-    var response = await http.post(
-        Uri.parse('https://meditransparency.onrender.com/doctor/patients'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader: "Bearer $token"
-          // 'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{"hospitalid": selhospital}));
-    var data = jsonDecode(response.body);
-    log("here:"+ data.toString());
-    if (response.statusCode == 200) {
-      List<Patient> patients = (data['patientsinfo'] as List)
-          .map((item) => Patient.fromJson(item))
-          .toList();
-      return patients;
-    } else {
-      throw Exception('Failed to load patients');
-    }
-  }
-}
 
 class patientlist extends StatefulWidget {
   const patientlist({super.key});
@@ -123,8 +40,27 @@ class _patientlistState extends State<patientlist> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: textgenerator(
-                        'My Patients', 40, 'Lato', 300, ui.blackclr),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.arrow_circle_left_outlined,
+                            color: ui.primaryclr,
+                            size: 45,
+                          ),
+                        ),
+                        textgenerator(
+                            'My Patients', 40, 'Lato', 300, ui.blackclr),
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                        )
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -139,74 +75,165 @@ class _patientlistState extends State<patientlist> {
                     height: 20,
                   ),
                   Expanded(
-                    child:FutureBuilder<List<Patient>>(
-                      future: ApiService.getPatientsDetail(),
+                    child: FutureBuilder(
+                      future: patientsinfo(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<Patient>? data = snapshot.data;
-                          if (snapshot.data!.isNotEmpty) {
-                            return ListView.builder(
-                              itemCount: data!.length,
-                              itemBuilder: (context, index) {
-                                patients.add(data[index].patientid);
-                                return InkWell(
-                                  onTap: () {
-                                    selectedindex = index;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    // color: Colors.red,
-                                    margin: EdgeInsets.all(10),
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      // color: const Color.fromARGB(255, 219, 27, 27),
-                                      border: (selectedindex == index)
-                                          ? Border.all(
-                                              color: ui.primaryclr, width: 2)
-                                          : Border.all(color: ui.greyclr),
-                                    ),
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // CachedNetworkImage(imageUrl: imageUrl),
-                                          CircleAvatar(
-                                            radius: 31,
-                                            backgroundColor: ui.greyclr,
-                                            child: CircleAvatar(
-                                              radius: 30,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                data[index].imgUrl,
+                          final data = snapshot.data;
+                          log("data passed is : " + data.toString());
+                          if (snapshot.data["success"] == true) {
+                            if (snapshot.data["count"] != 0) {
+                              return ListView.builder(
+                                itemCount: data["patientsinfo"]!.length,
+                                itemBuilder: (context, index) {
+                                  patients.add(
+                                      data["patientsinfo"][index]["patientid"]);
+                                  return InkWell(
+                                    onTap: () {
+                                      selectedindex = index;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      // color: Colors.red,
+                                      margin: EdgeInsets.all(10),
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        // color: const Color.fromARGB(255, 219, 27, 27),
+                                        border: (selectedindex == index)
+                                            ? Border.all(
+                                                color: ui.primaryclr, width: 2)
+                                            : Border.all(color: ui.greyclr),
+                                      ),
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            // CachedNetworkImage(imageUrl: imageUrl),
+                                            CircleAvatar(
+                                              radius: 31,
+                                              backgroundColor: ui.greyclr,
+                                              child: CircleAvatar(
+                                                radius: 30,
+                                                backgroundImage:
+                                                    CachedNetworkImageProvider(
+                                                  data["patientsinfo"][index]
+                                                      ["imgurl"],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          textgenerator(
-                                              (data[index].name).toUpperCase(),
-                                              15,
-                                              'Lato',
-                                              300,
-                                              ui.blackclr),
-                                          SizedBox(
-                                            width: 5,
-                                          )
-                                        ]),
-                                  ),
-                                );
-                              },
-                            );
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    textgenerator(
+                                                        (data["patientsinfo"]
+                                                                [index]["name"])
+                                                            .toUpperCase(),
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                    textgenerator(
+                                                        " | ",
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                    textgenerator(
+                                                        (data["patientsinfo"]
+                                                                [index]["age"]
+                                                            .toString()),
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                    textgenerator(
+                                                        " ",
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                    textgenerator(
+                                                        (data["patientsinfo"]
+                                                            [index]["gender"]),
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    textgenerator(
+                                                        "Registered on  ",
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                    textgenerator(
+                                                        (data["patientsinfo"]
+                                                                [index]
+                                                            ["registeredon"]),
+                                                        15,
+                                                        'Lato',
+                                                        300,
+                                                        ui.blackclr),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            )
+                                          ]),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(
+                                  child: textgenerator(
+                                      'No patients for current hospital',
+                                      15,
+                                      'Lato',
+                                      300,
+                                      ui.primarylightclr));
+                            }
                           } else {
                             return Center(
-                                child: textgenerator('No hospitals to list', 15,
-                                    'Lato', 300, ui.primarylightclr));
+                                child: textgenerator(
+                                    'Some Internal Error Occured',
+                                    15,
+                                    'Lato',
+                                    300,
+                                    ui.primarylightclr));
                           }
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         } else {
-                          return CircularProgressIndicator();
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                              ),
+                              Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: CircularProgressIndicator()),
+                            ],
+                          );
                         }
                       },
                     ),
@@ -222,13 +249,22 @@ class _patientlistState extends State<patientlist> {
           child: buttongenerator('Continue', context, () async {
             if (selectedindex == null) {
               log('something is missing');
+              if(patients.length!=0){
+
+              Toastmsg(msg: 'Please select a patient');
+              }else{
+              Toastmsg(msg: "Try changing your current Hospital");
+
+              }
             } else {
               print(patients[selectedindex]);
               StorageManager.saveData(
                   'selected_patient', patients[selectedindex]);
-              StorageManager.readData('selected_patient').then((value){
-                print("selected patient is :"+value);
-                Navigator.pushReplacementNamed(context, '/choosepatient');
+              StorageManager.readData('selected_patient').then((value) {
+                print("selected patient is :" + value);
+                // Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/homepage');
               });
             }
           }),

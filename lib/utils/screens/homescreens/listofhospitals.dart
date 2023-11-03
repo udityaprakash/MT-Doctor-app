@@ -10,6 +10,8 @@ import 'package:meditransparency/utils/widgets/button.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 import 'package:http/http.dart' as http;
 
+import '../../widgets/toastmsg.dart';
+
 class Hospital {
   final String imgUrl;
   final String name;
@@ -182,13 +184,20 @@ class _listhospitalsState extends State<listhospitals> {
           child: buttongenerator('Continue', context, () async {
             if (selectedindex == null) {
               log('something is missing');
+              if(hospitals.length!=0){
+
+              Toastmsg(msg: 'Please select a hospital');
+              }else{
+              Toastmsg(msg: 'This App is Useless for You');
+
+              }
             } else {
               print(hospitals[selectedindex]);
               StorageManager.saveData(
                   'current_hospital_id', hospitals[selectedindex]);
               StorageManager.readData('current_hospital_id').then((value){
                 print("stored hospital id was :"+value);
-                Navigator.pushReplacementNamed(context, '/choosepatient');
+                Navigator.pushNamed(context, '/choosepatient');
               });
             }
           }),
