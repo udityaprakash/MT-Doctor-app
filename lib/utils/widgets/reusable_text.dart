@@ -28,3 +28,18 @@ Widget text(String title, Color color, double fontSize, FontWeight fontWeight ,{
     ),
   );
 }
+
+ Widget textasitis(
+    String tex, double fontSiz, String fontfamly, double weit, Color co) {
+  return Text(
+    tex,
+    // overflow: TextOverflow.ellipsis,
+    // textAlign: TextAlign.center,
+    style: TextStyle(
+      fontFamily: fontfamly,
+      fontSize: fontSiz,
+      color: co,
+      fontVariations: <FontVariation>[FontVariation('wght', weit)],
+    ),
+  );
+}

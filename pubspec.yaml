@@ -73,6 +73,13 @@ flutter:
     - assets/svgs/top_notch.svg
     - assets/svgs/google.svg
     - assets/svgs/facebook.svg
+    - assets/svgs/laboratory.svg
+    - assets/svgs/livemonitor.svg
+    - assets/svgs/medicine.svg
+    - assets/svgs/patient.svg
+    - assets/svgs/patientsuffix.svg
+    - assets/svgs/laboratorysuffix.svg
+    - assets/svgs/medicinesuffix.svg
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

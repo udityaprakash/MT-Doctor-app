@@ -57,6 +57,30 @@ Future<dynamic> patientsinfo() async {
   }
 }
 
+Future<dynamic> patientinfofromstorage() async {
+  try {
+    final hospitalid = await StorageManager.readData("current_hospital_id");
+    if (hospitalid == null) {
+      return "hospital Doesn't Exist";
+    } else {
+      final patients_info =
+          jsonDecode(await StorageManager.readData('current_patients_list'));
+      // log("all patients Info " + patients_info.toString());
+      final patientid = await StorageManager.readData('selected_patient');
+      var i, index;
+      for (i in patients_info['patientsinfo']) {
+        if (i["patientId"] == patientid) {
+          break;
+        }
+      }
+      // log(i.toString());
+      return i;
+    }
+  } catch (er) {
+    log("error here " + er.toString());
+  }
+}
+
 Future<Map<dynamic, dynamic>?> get_patients_list() async {
   try {
     log("setting patients list");
@@ -93,12 +117,11 @@ Future<Map?> patientslist() async {
 
 Future<String?> issaveddata() async {
   try {
-    
-    final token = await StorageManager.readData('selected_patient').then((value) {
-                print("selected patient is :" + value);
-    });
-
+    final token = await StorageManager.readData('selected_patient');
+    log("already user is logged in : " + token.toString());
 
     return token;
-  } catch (er) {}
+  } catch (er) {
+    log("error :" + er.toString());
+  }
 }
