@@ -161,14 +161,40 @@ class _homepageState extends State<homepage> {
               SizedBox(
                 height: 30,
               ),
-              ListView.builder(
-                  itemCount: tabs!.length,
-                  itemBuilder: (context, index) {
-                    return slipecards(
-                        prefix: tabs[index]['prefixicon'],
-                        name: tabs[index]['name'],
-                        suffix: tabs[index]['suffixsvg']);
-                  }),
+              slipecards(
+                        prefix: tabs[0]['prefixicon'],
+                        name: tabs[0]['name'],
+                        suffix: tabs[0]['suffixsvg']),
+                        SizedBox(
+                height: 30,
+              ),
+              slipecards(
+                        prefix: tabs[1]['prefixicon'],
+                        name: tabs[1]['name'],
+                        suffix: tabs[1]['suffixsvg']),
+                        SizedBox(
+                height: 30,
+              ),
+              slipecards(
+                        prefix: tabs[2]['prefixicon'],
+                        name: tabs[2]['name'],
+                        suffix: tabs[2]['suffixsvg']),
+                        SizedBox(
+                height: 30,
+              ),
+              slipecards(
+                        prefix: tabs[3]['prefixicon'],
+                        name: tabs[3]['name'],
+                        suffix: tabs[1]['suffixsvg'])                              
+              // ListView.builder(
+              //     itemCount:4,
+              //     itemBuilder: (context, index) {
+              //       return slipecards(
+              //           prefix: tabs[index]['prefixicon'],
+              //           name: tabs[index]['name'],
+              //           suffix: tabs[index]['suffixsvg']);
+              //     }),
+
               // Container(
               //     height: 100,
               //     decoration: BoxDecoration(
