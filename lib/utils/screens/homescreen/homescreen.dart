@@ -56,12 +56,29 @@ class _homepageState extends State<homepage> {
                     builder: (context, snapshot) {
                       // log(snapshot.toString());
                       if (snapshot.hasData) {
-                        return textgenerator(
-                            '${((snapshot.data!['data']['name']).toString()).toUpperCase()}',
-                            20,
-                            'Lato',
-                            300,
-                            ui.blackclr);
+                        return Row(
+                          children: [
+                            textgenerator(
+                                '${((snapshot.data!['data']['name']).toString()).toUpperCase()}',
+                                20,
+                                'Lato',
+                                300,
+                                ui.blackclr),
+                                SizedBox(width: 5,),
+                            CircleAvatar(
+                                            radius: 25,
+                                            backgroundColor: ui.greyclr,
+                                            child: CircleAvatar(
+                                              radius: 24,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                (snapshot.data!['data']['imgurl']),
+                                              ),
+                                            ),
+                                          ),
+                            SizedBox(width: 10,),                
+                          ],
+                        );
                         // Display the data if available
                       } else if (snapshot.hasError) {
                         return textgenerator('Unknown', 20, 'Lato', 300,
@@ -77,25 +94,25 @@ class _homepageState extends State<homepage> {
               // ),
             ],
           ),
-          IconButton(
-            icon: Icon(
-              Icons.account_circle,
-              color: ui.greyclr,
-            ),
-            iconSize: 30,
-            onPressed: () async {
-              try {
-                log(" logging out");
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.account_circle,
+          //     color: ui.greyclr,
+          //   ),
+          //   iconSize: 30,
+          //   onPressed: () async {
+          //     try {
+          //       log(" logging out");
 
-                final token = await StorageManager.readData('selected_patient');
-                log(" logging out user with value : " + token);
-                // Navigator.of(context).pop();
-                // Navigator.pushReplacementNamed(context, '/featurescreen');
-              } catch (e) {
-                log('error in logging out:' + e.toString());
-              }
-            },
-          ),
+          //       final token = await StorageManager.readData('selected_patient');
+          //       log(" logging out user with value : " + token);
+          //       // Navigator.of(context).pop();
+          //       // Navigator.pushReplacementNamed(context, '/featurescreen');
+          //     } catch (e) {
+          //       log('error in logging out:' + e.toString());
+          //     }
+          //   },
+          // ),
         ],
       ),
       drawer: Drawer(
@@ -143,7 +160,7 @@ class _homepageState extends State<homepage> {
                             'Lato',
                             300,
                             ui.transbackgroundclr),
-                            
+
 
 
                 ],
