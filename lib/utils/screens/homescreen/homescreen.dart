@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meditransparency/data/constants/colors.dart';
@@ -39,7 +40,7 @@ class _homepageState extends State<homepage> {
       {
         "name": "Live Monitor",
         "prefixicon": 'assets/svgs/livemonitor.svg',
-        "suffixsvg": "assets/svgs/medicinesuffix.svg"
+        "suffixsvg": "assets/svgs/live-streaming.svg"
       }
     ];
     return Scaffold(
@@ -50,11 +51,30 @@ class _homepageState extends State<homepage> {
         actions: [
           Row(
             children: [
-              Text(
-                'Gopinath',
-                style: TextStyle(
-                    color: ui.blackclr, fontFamily: 'Play', fontSize: 20),
-              ),
+              FutureBuilder(
+                    future: doctordetails(),
+                    builder: (context, snapshot) {
+                      // log(snapshot.toString());
+                      if (snapshot.hasData) {
+                        return textgenerator(
+                            '${((snapshot.data!['data']['name']).toString()).toUpperCase()}',
+                            20,
+                            'Lato',
+                            300,
+                            ui.blackclr);
+                        // Display the data if available
+                      } else if (snapshot.hasError) {
+                        return textgenerator('Unknown', 20, 'Lato', 300,
+                            ui.blackclr); // Display an error message if an error occurs
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )
+              // Text(
+              //   'Gopinath',
+              //   style: TextStyle(
+              //       color: ui.blackclr, fontFamily: 'Play', fontSize: 20),
+              // ),
             ],
           ),
           IconButton(
@@ -79,28 +99,55 @@ class _homepageState extends State<homepage> {
         ],
       ),
       drawer: Drawer(
+        
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Text('Drawer Header'),
-              decoration: BoxDecoration(
-                color: ui.primaryclr,
+            // SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
+            Container(
+              padding: EdgeInsets.only(top:20,),
+              height: MediaQuery.of(context).size.height,
+              color: ui.primaryclr,
+              child: Column(
+                children: [
+                  DrawerHeader(
+                    padding: EdgeInsets.all(0),                   
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: ui.backgroundclr,
+                          child: 
+                            Image.asset(
+                              "assets/imagess/logo.png",
+                               ),
+                          ),],
+                    ),
+                  ),
+                  textgenerator(
+                            'Hospital',
+                            25,
+                            'Lato',
+                            300,
+                            ui.backgroundclr),         
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10,horizontal: 40),
+                    alignment: Alignment.center,
+                    width: 450,
+                    height: 1,
+                    color: ui.backgroundclr
+                ),
+                textgenerator(
+                            'Select a hospital',
+                            17,
+                            'Lato',
+                            300,
+                            ui.transbackgroundclr),
+                            
+
+
+                ],
               ),
-            ),
-            ListTile(
-              title: Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
             ),
           ],
         ),
@@ -185,7 +232,7 @@ class _homepageState extends State<homepage> {
               slipecards(
                         prefix: tabs[3]['prefixicon'],
                         name: tabs[3]['name'],
-                        suffix: tabs[1]['suffixsvg'])                              
+                        suffix: tabs[3]['suffixsvg'])                              
               // ListView.builder(
               //     itemCount:4,
               //     itemBuilder: (context, index) {

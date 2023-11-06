@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:meditransparency/utils/screens/auth_screens/sign_in_screen.dart';
 import 'package:meditransparency/utils/screens/homescreen/homepageredirector.dart';
@@ -24,6 +25,8 @@ class CustomRoute {
         case "/splashpage":
           // ignore: prefer_const_constructors
           return SplashScreen();
+        case "/":
+          break;
         case "/featurescreen":
           return Homepage();
         case '/privacy_policy':
@@ -38,14 +41,12 @@ class CustomRoute {
           return patientlist();
         case "/homepage":
           return homepage();
-
         case "/homepageredirector":
-          return home_page_redirector(); 
+          return home_page_redirector();
         case "signinscreen":
-          // ignore: prefer_const_constructors
           return SignInScreen();
       }
-
+      log("Settings name: "+(settings.name).toString());
       // ignore: prefer_const_constructors
       return Homepage();
     });

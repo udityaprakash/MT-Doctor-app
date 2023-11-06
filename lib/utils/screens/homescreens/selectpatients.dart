@@ -90,8 +90,11 @@ class _patientlistState extends State<patientlist> {
                                       data["patientsinfo"][index]["patientid"]);
                                   return InkWell(
                                     onTap: () {
+                                      setState(() {
+                                        
                                       selectedindex = index;
-                                      setState(() {});
+
+                                      });
                                     },
                                     child: Container(
                                       // color: Colors.red,
@@ -257,14 +260,14 @@ class _patientlistState extends State<patientlist> {
 
               }
             } else {
-              print(patients[selectedindex]);
+              log("patent selected is: "+patients[selectedindex]);
               StorageManager.saveData(
                   'selected_patient', patients[selectedindex]);
               StorageManager.readData('selected_patient').then((value) {
                 print("selected patient is :" + value);
                 // Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/homepage');
+                // Navigator.pop(context);
+                Navigator.pushNamed(context, '/homepage');
               });
             }
           }),

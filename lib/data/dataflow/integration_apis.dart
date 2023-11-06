@@ -27,7 +27,7 @@ dynamic login_in(String mobileno, String password) async {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
 
-      // print('success Response: '+jsonResponse.toString());
+      print('success Response: ' + jsonResponse.toString());
 
       return jsonResponse;
     } else {
@@ -36,6 +36,8 @@ dynamic login_in(String mobileno, String password) async {
   } catch (err) {
     Toastmsg(msg: 'something went wrong');
     print("error caught: " + err.toString());
+
+    return ();
   }
 }
 
@@ -69,11 +71,13 @@ Future<dynamic> patientinfofromstorage() async {
       final patientid = await StorageManager.readData('selected_patient');
       var i, index;
       for (i in patients_info['patientsinfo']) {
-        if (i["patientId"] == patientid) {
+        if (i["patientid"] == patientid) {
+          index = i;
           break;
         }
       }
-      // log(i.toString());
+      // log("patient matched is: " + index.toString());
+
       return i;
     }
   } catch (er) {
@@ -115,9 +119,30 @@ Future<Map?> patientslist() async {
   }
 }
 
+Future<Map?> doctordetails() async {
+  try {
+    String? token = (await StorageManager.readData('token')).toString();
+    log("doctor token is :" + token);
+    // String? selhospital =
+    //     (await StorageManager.readData('current_hospital_id')).toString();
+    // log("Initialised Profile get for: " + token);
+    final response = await get(
+        Uri.parse('https://meditransparency.onrender.com/doctor/profiledetails'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          'Content-Type': 'application/json; charset=UTF-8',
+        },);
+    final Map output = jsonDecode(response.body);
+    log("doctor profile details: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: in patients list " + er.toString());
+  }
+}
+
 Future<String?> issaveddata() async {
   try {
-    final token = await StorageManager.readData('selected_patient');
+    final token = await StorageManager.readData('token');
     log("already user is logged in : " + token.toString());
 
     return token;

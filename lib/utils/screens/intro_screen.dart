@@ -55,7 +55,7 @@ class Homepage extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(left: 50, right: 50),
                               child: buttongenerator('Login', context, () {
-                                Navigator.pushNamed(context, '/login');
+                                Navigator.pushReplacementNamed(context, '/login');
                               }),
                             ),
                             SizedBox(

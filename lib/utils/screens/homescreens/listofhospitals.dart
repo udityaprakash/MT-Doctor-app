@@ -129,7 +129,7 @@ class _listhospitalsState extends State<listhospitals> {
                                         children: [
                                           // CachedNetworkImage(imageUrl: imageUrl),
                                           CircleAvatar(
-                                            radius: 31,
+                                            radius: 30,
                                             backgroundColor: ui.greyclr,
                                             child: CircleAvatar(
                                               radius: 30,

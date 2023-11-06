@@ -3,6 +3,8 @@ import 'package:meditransparency/data/dataflow/integration_apis.dart';
 import 'package:meditransparency/utils/screens/homescreen/homescreen.dart';
 import 'package:meditransparency/utils/screens/intro_screen.dart';
 
+import '../homescreens/listofhospitals.dart';
+
 class home_page_redirector extends StatefulWidget {
   const home_page_redirector({super.key});
 
@@ -20,7 +22,7 @@ class _home_page_redirectorState extends State<home_page_redirector> {
         if (id_storage.data == null) {
           return Homepage();
         } else if (id_storage.hasData) {
-          return homepage();
+          return listhospitals();
         } else {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
