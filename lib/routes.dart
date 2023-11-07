@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:meditransparency/utils/screens/auth_screens/sign_in_screen.dart';
 import 'package:meditransparency/utils/screens/homescreen/homepageredirector.dart';
 import 'package:meditransparency/utils/screens/homescreen/homescreen.dart';
+import 'package:meditransparency/utils/screens/homescreens/laboratory.dart';
 import 'package:meditransparency/utils/screens/homescreens/listofhospitals.dart';
+import 'package:meditransparency/utils/screens/homescreens/livemonitor.dart';
+import 'package:meditransparency/utils/screens/homescreens/medicines.dart';
+import 'package:meditransparency/utils/screens/homescreens/patients.dart';
 import 'package:meditransparency/utils/screens/homescreens/selectpatients.dart';
 import 'package:meditransparency/utils/screens/intro_screen.dart';
 import 'package:meditransparency/utils/screens/splash_screen.dart';
@@ -43,8 +47,15 @@ class CustomRoute {
           return homepage();
         case "/homepageredirector":
           return home_page_redirector();
-        case "signinscreen":
-          return SignInScreen();
+        case "/patient":
+          return patient();
+        case "/lab":
+          return laboratory();
+        case "/med":
+          return medicines();
+        case "/livem":
+          return livemonitor();      
+
       }
       log("Settings name: "+(settings.name).toString());
       // ignore: prefer_const_constructors

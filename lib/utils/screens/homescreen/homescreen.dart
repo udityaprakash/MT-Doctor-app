@@ -87,32 +87,8 @@ class _homepageState extends State<homepage> {
                       return CircularProgressIndicator();
                     },
                   )
-              // Text(
-              //   'Gopinath',
-              //   style: TextStyle(
-              //       color: ui.blackclr, fontFamily: 'Play', fontSize: 20),
-              // ),
             ],
           ),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.account_circle,
-          //     color: ui.greyclr,
-          //   ),
-          //   iconSize: 30,
-          //   onPressed: () async {
-          //     try {
-          //       log(" logging out");
-
-          //       final token = await StorageManager.readData('selected_patient');
-          //       log(" logging out user with value : " + token);
-          //       // Navigator.of(context).pop();
-          //       // Navigator.pushReplacementNamed(context, '/featurescreen');
-          //     } catch (e) {
-          //       log('error in logging out:' + e.toString());
-          //     }
-          //   },
-          // ),
         ],
       ),
       drawer: Drawer(
@@ -225,88 +201,51 @@ class _homepageState extends State<homepage> {
               SizedBox(
                 height: 30,
               ),
-              slipecards(
-                        prefix: tabs[0]['prefixicon'],
-                        name: tabs[0]['name'],
-                        suffix: tabs[0]['suffixsvg']),
+              InkWell(
+                onTap: ()=>{
+                  Navigator.pushNamed(context, '/patient')
+                },
+                child: slipecards(
+                          prefix: tabs[0]['prefixicon'],
+                          name: tabs[0]['name'],
+                          suffix: tabs[0]['suffixsvg']),
+              ),
                         SizedBox(
                 height: 30,
               ),
-              slipecards(
-                        prefix: tabs[1]['prefixicon'],
-                        name: tabs[1]['name'],
-                        suffix: tabs[1]['suffixsvg']),
+              InkWell(
+                onTap: ()=>{
+                  Navigator.pushNamed(context, '/lab')
+                },
+                child: slipecards(
+                          prefix: tabs[1]['prefixicon'],
+                          name: tabs[1]['name'],
+                          suffix: tabs[1]['suffixsvg']),
+              ),
                         SizedBox(
                 height: 30,
               ),
-              slipecards(
-                        prefix: tabs[2]['prefixicon'],
-                        name: tabs[2]['name'],
-                        suffix: tabs[2]['suffixsvg']),
+              InkWell(
+                onTap: ()=>{
+                  Navigator.pushNamed(context, '/med')
+                },
+                child: slipecards(
+                          prefix: tabs[2]['prefixicon'],
+                          name: tabs[2]['name'],
+                          suffix: tabs[2]['suffixsvg']),
+              ),
                         SizedBox(
                 height: 30,
               ),
-              slipecards(
-                        prefix: tabs[3]['prefixicon'],
-                        name: tabs[3]['name'],
-                        suffix: tabs[3]['suffixsvg'])                              
-              // ListView.builder(
-              //     itemCount:4,
-              //     itemBuilder: (context, index) {
-              //       return slipecards(
-              //           prefix: tabs[index]['prefixicon'],
-              //           name: tabs[index]['name'],
-              //           suffix: tabs[index]['suffixsvg']);
-              //     }),
-
-              // Container(
-              //     height: 100,
-              //     decoration: BoxDecoration(
-              //         // color: Colors.black38,
-              //         gradient: LinearGradient(
-              //           colors: [
-              //             ui.primarylightclr,
-              //             ui.primarymlightclr
-              //           ], // Add your gradient colors here
-              //           begin: Alignment.topLeft,
-              //           end: Alignment.bottomRight,
-              //           // stops: [0.0, 1.0],
-              //           tileMode: TileMode.clamp,
-              //         ),
-              //         borderRadius: BorderRadius.circular(5)),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       crossAxisAlignment: CrossAxisAlignment.end,
-              //       children: [
-              //         Column(
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             Row(
-              //               mainAxisAlignment: MainAxisAlignment.center,
-              //               crossAxisAlignment: CrossAxisAlignment.center,
-              //               children: [
-              //                 SvgPicture.asset(
-              //                   "${tabs[1]['prefixicon']}",
-              //                   height: 40,
-              //                 ),
-              //                 SizedBox(
-              //                   width: 10,
-              //                 ),
-              //                 textgenerator('${tabs[1]['name']}', 20, 'Lato',
-              //                     300, ui.blackclr)
-              //               ],
-              //             ),
-              //           ],
-              //         ),
-              //         SizedBox(
-              //           width: 10,
-              //         ),
-              //         SvgPicture.asset(
-              //           "${tabs[1]['suffixsvg']}",
-              //           height: 80,
-              //         ),
-              //       ],
-              //     )),
+              InkWell(
+                onTap: ()=>{
+                  Navigator.pushNamed(context, '/livem')
+                },
+                child: slipecards(
+                          prefix: tabs[3]['prefixicon'],
+                          name: tabs[3]['name'],
+                          suffix: tabs[3]['suffixsvg']),
+              )   
             ],
           ),
         ),
