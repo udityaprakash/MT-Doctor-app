@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
 }

@@ -27,7 +27,7 @@ dynamic login_in(String mobileno, String password) async {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
 
-      print('success Response: ' + jsonResponse.toString());
+      // print('success Response: ' + jsonResponse.toString());
 
       return jsonResponse;
     } else {
@@ -43,7 +43,7 @@ dynamic login_in(String mobileno, String password) async {
 
 Future<dynamic> patientsinfo() async {
   try {
-    log('here');
+    // log('here');
     await get_patients_list();
     final hospitalid = await StorageManager.readData("current_hospital_id");
     if (hospitalid == null) {
@@ -51,11 +51,25 @@ Future<dynamic> patientsinfo() async {
     } else {
       final patients_info =
           jsonDecode(await StorageManager.readData('current_patients_list'));
-      log("all patients Info " + patients_info.toString());
+      // log("all patients Info " + patients_info.toString());
       return patients_info;
     }
   } catch (er) {
     log("error here " + er.toString());
+  }
+}
+
+Future<dynamic> doctorinfofromstorage() async {
+  try {
+    final doctor = await StorageManager.readData("doctor_basic_info");
+    if (doctor == null) {
+      return "";
+    } else{
+      return doctor;
+    }
+  } catch (er) {
+    log("error here " + er.toString());
+    return "";
   }
 }
 
@@ -87,7 +101,7 @@ Future<dynamic> patientinfofromstorage() async {
 
 Future<Map<dynamic, dynamic>?> get_patients_list() async {
   try {
-    log("setting patients list");
+    // log("setting patients list");
     // SharedPreferences user_info = await SharedPreferences.getInstance();
     Map? patientslists = await patientslist();
     StorageManager.saveData('current_patients_list', jsonEncode(patientslists));
@@ -100,10 +114,10 @@ Future<Map<dynamic, dynamic>?> get_patients_list() async {
 Future<Map?> patientslist() async {
   try {
     String? token = (await StorageManager.readData('token')).toString();
-    log("doctor token is :" + token);
+    // log("doctor token is :" + token);
     String? selhospital =
         (await StorageManager.readData('current_hospital_id')).toString();
-    log("Initialised Profile get for: " + token);
+    // log("Initialised Profile get for: " + token);
     final response = await post(
         Uri.parse('https://meditransparency.onrender.com/doctor/patients'),
         headers: <String, String>{
@@ -112,7 +126,7 @@ Future<Map?> patientslist() async {
         },
         body: jsonEncode(<String, String>{"hospitalid": selhospital}));
     final Map output = jsonDecode(response.body);
-    log("response of the profile : " + output.toString());
+    // log("response of the profile : " + output.toString());
     return output;
   } catch (er) {
     log("error caught: in patients list " + er.toString());
@@ -122,7 +136,7 @@ Future<Map?> patientslist() async {
 Future<Map?> doctordetails() async {
   try {
     String? token = (await StorageManager.readData('token')).toString();
-    log("doctor token is :" + token);
+    // log("doctor token is :" + token);
     // String? selhospital =
     //     (await StorageManager.readData('current_hospital_id')).toString();
     // log("Initialised Profile get for: " + token);
@@ -133,7 +147,7 @@ Future<Map?> doctordetails() async {
           'Content-Type': 'application/json; charset=UTF-8',
         },);
     final Map output = jsonDecode(response.body);
-    log("doctor profile details: " + output.toString());
+    // log("doctor profile details: " + output.toString());
     return output;
   } catch (er) {
     log("error caught: in patients list " + er.toString());
@@ -143,10 +157,56 @@ Future<Map?> doctordetails() async {
 Future<String?> issaveddata() async {
   try {
     final token = await StorageManager.readData('token');
-    log("already user is logged in : " + token.toString());
+    // log("already user is logged in : " + token.toString());
 
     return token;
   } catch (er) {
     log("error :" + er.toString());
+  }
+}
+
+Future<Map?> patientdetails() async {
+  try {
+    String? token = (await StorageManager.readData('token')).toString();
+    // log("doctor token is :" + token);
+    final patientid = await StorageManager.readData('selected_patient');
+    // String? selhospital =
+    //     (await StorageManager.readData('current_hospital_id')).toString();
+    // log("Initialised Profile get for: " + token);
+    final response = await post(
+        Uri.parse('https://meditransparency.onrender.com/doctor/patient/profiledetails'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:jsonEncode(<String, String>{"patientid": patientid}));
+    final Map output = jsonDecode(response.body);
+    // log("doctor profile details: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: in patients list " + er.toString());
+  }
+}
+
+Future<Map?> medicalrecords() async {
+  try {
+    String? token = (await StorageManager.readData('token')).toString();
+    // log("doctor token is :" + token);
+    final patientid = await StorageManager.readData('selected_patient');
+    // String? selhospital =
+    //     (await StorageManager.readData('current_hospital_id')).toString();
+    // log("Initialised Profile get for: " + token);
+    final response = await post(
+        Uri.parse('https://meditransparency.onrender.com/doctor/patient/medicalhistory'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:jsonEncode(<String, String>{"p_id": patientid}));
+    final Map output = jsonDecode(response.body);
+    // log("doctor profile details: " + output.toString());
+    return output;
+  } catch (er) {
+    log("error caught: in patients list " + er.toString());
   }
 }

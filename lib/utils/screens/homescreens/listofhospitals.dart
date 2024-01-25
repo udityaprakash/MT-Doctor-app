@@ -158,7 +158,7 @@ class _listhospitalsState extends State<listhospitals> {
                             return Center(child: textgenerator('No hospitals to list', 15 , 'Lato', 300, ui.primarylightclr));
                           }
                         } else if (snapshot.hasError) {
-                          return textgenerator('${snapshot.error}', 15 , 'Lato', 300, ui.primarylightclr);
+                          return textgenerator('Failed to load. Please retry', 15 , 'Lato', 300, ui.primarylightclr);
                         } else {
                           return Column(
                             children: [
@@ -192,7 +192,7 @@ class _listhospitalsState extends State<listhospitals> {
 
               }
             } else {
-              print(hospitals[selectedindex]);
+              // print(hospitals[selectedindex]);
               StorageManager.saveData(
                   'current_hospital_id', hospitals[selectedindex]);
               StorageManager.readData('current_hospital_id').then((value){

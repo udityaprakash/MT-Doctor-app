@@ -91,9 +91,7 @@ class _patientlistState extends State<patientlist> {
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
-                                        
-                                      selectedindex = index;
-
+                                        selectedindex = index;
                                       });
                                     },
                                     child: Container(
@@ -252,22 +250,21 @@ class _patientlistState extends State<patientlist> {
           child: buttongenerator('Continue', context, () async {
             if (selectedindex == null) {
               log('something is missing');
-              if(patients.length!=0){
-
-              Toastmsg(msg: 'Please select a patient');
-              }else{
-              Toastmsg(msg: "Try changing your current Hospital");
-
+              if (patients.length != 0) {
+                Toastmsg(msg: 'Please select a patient');
+              } else {
+                Toastmsg(msg: "Try changing your current Hospital");
               }
             } else {
-              log("patent selected is: "+patients[selectedindex]);
+              // log("patent selected is: " + patients[selectedindex]);
               StorageManager.saveData(
                   'selected_patient', patients[selectedindex]);
               StorageManager.readData('selected_patient').then((value) {
-                print("selected patient is :" + value);
+                // print("selected patient is :" + value);
                 // Navigator.pop(context);
                 // Navigator.pop(context);
                 Navigator.pushNamed(context, '/homepage');
+                // Navigator.pushNamed(context, '/patient');
               });
             }
           }),

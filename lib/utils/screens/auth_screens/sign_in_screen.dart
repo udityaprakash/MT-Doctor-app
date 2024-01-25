@@ -173,12 +173,15 @@ class _SignInScreenState extends State<SignInScreen> {
                                 LoginResponse.fromJson(response);
                             StorageManager.saveData(
                                 'token', loginResponse.token);
-                            StorageManager.readData('token')
-                                .then((value){
+                            StorageManager.readData('token').then((value)async {
+                              print("stored token was :" + value);
 
-                                print("stored token was :"+value);
-                                Navigator.pushReplacementNamed(context, '/choosehospital');
-                                });
+                              final doctor = await doctordetails();
+                              StorageManager.saveData(
+                                'doctor_basic_info', doctor);
+                              Navigator.pushReplacementNamed(
+                                  context, '/choosehospital');
+                            });
                           }
                           _isloading = false;
                           setState(() {});
@@ -201,7 +204,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     thickness: 1.5,
                   )),
                   Text(
-                    " Or sign up with ",
+                    " Or sign in with ",
                     style: TextStyle(color: Colors.black38),
                   ),
                   Expanded(

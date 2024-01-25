@@ -16,7 +16,7 @@ Widget slipecards({prefix, name, suffix}) {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             // stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
+            // tileMode: TileMode.clamp,
           ),
           borderRadius: BorderRadius.circular(5)),
       child: Row(
@@ -34,7 +34,7 @@ Widget slipecards({prefix, name, suffix}) {
                     "${prefix.toString()}",
                     height: 40,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   textgenerator(
@@ -43,13 +43,14 @@ Widget slipecards({prefix, name, suffix}) {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
-          SvgPicture.asset(
-            "${suffix.toString()}",
-            height: 80,
-          ),
+          Image.asset('${suffix.toString()}', height: 80),
+          // SvgPicture.asset(
+          //   "${suffix.toString()}",
+          //   height: 80,
+          // ),
         ],
       ));
 }

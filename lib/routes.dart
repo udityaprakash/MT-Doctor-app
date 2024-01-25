@@ -58,8 +58,8 @@ class CustomRoute {
 
       }
       log("Settings name: "+(settings.name).toString());
-      // ignore: prefer_const_constructors
       return Homepage();
+      // ignore: prefer_const_constructors
     });
   }
 }
