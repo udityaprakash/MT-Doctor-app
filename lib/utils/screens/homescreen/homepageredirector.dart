@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meditransparency/data/dataflow/integration_apis.dart';
 import 'package:meditransparency/utils/screens/homescreen/homescreen.dart';
 import 'package:meditransparency/utils/screens/intro_screen.dart';
+import 'package:meditransparency/data/constants/colors.dart';
 
 import '../homescreens/listofhospitals.dart';
 
@@ -24,8 +25,8 @@ class _home_page_redirectorState extends State<home_page_redirector> {
         } else if (id_storage.hasData) {
           return listhospitals();
         } else {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator(color: ui.primaryclr,)),
           );
         }
       },

@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 
 class No_Internet extends StatelessWidget {
@@ -37,7 +38,7 @@ class _NoConnectionScreenState extends State<NoConnectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  text("No Internet", Colors.lightBlueAccent,
+                  text("Please check your Internet Connection", ui.primaryclr,
                                       22.0, FontWeight.w500,),
                   // Text('No Internet', context),
                   SizedBox(

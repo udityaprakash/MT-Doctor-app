@@ -11,7 +11,18 @@ class livemonitor extends StatefulWidget {
 }
 
 class _livemonitorState extends State<livemonitor> {
+  String displayText = '';
+  bool showProgress = true;
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        showProgress = false;
+        displayText = 'No Cameras were Detected';
+      });
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +45,21 @@ class _livemonitorState extends State<livemonitor> {
           ),
         ],
       ),
+      body: Container(
+        width: MediaQuery.of(context).size.width, 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            showProgress
+                ? CircularProgressIndicator(
+                    color: ui.primaryclr,
+                  )
+                :
+            textgenerator('No Cameras were Detected', 20, 'Lato', 300, ui.greyclr),
+          ],
+        ),)
+      
     );
   }
 }

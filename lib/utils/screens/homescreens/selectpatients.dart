@@ -232,7 +232,7 @@ class _patientlistState extends State<patientlist> {
                               Container(
                                   height: 40,
                                   width: 40,
-                                  child: CircularProgressIndicator()),
+                                  child: CircularProgressIndicator(color: ui.primaryclr,)),
                             ],
                           );
                         }

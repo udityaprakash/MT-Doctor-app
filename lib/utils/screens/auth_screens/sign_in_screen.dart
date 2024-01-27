@@ -144,7 +144,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: 30,
               ),
               _isloading
-                  ? CircularProgressIndicator()
+                  ? CircularProgressIndicator(color: ui.primaryclr,)
                   : nextorcontinuebtn(
                       context: context,
                       tex: 'Next',
@@ -177,8 +177,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               print("stored token was :" + value);
 
                               final doctor = await doctordetails();
+                              print("doctor details are :" + doctor.toString());
+
+
                               StorageManager.saveData(
                                 'doctor_basic_info', doctor);
+
+                                
                               Navigator.pushReplacementNamed(
                                   context, '/choosehospital');
                             });

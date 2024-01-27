@@ -10,6 +10,18 @@ class medicines extends StatefulWidget {
 
 class _medicinesState extends State<medicines> {
   @override
+  String displayText = '';
+  bool showProgress = true;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        showProgress = false;
+        displayText = 'No Cameras were Detected';
+      });
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -32,6 +44,21 @@ class _medicinesState extends State<medicines> {
           ),
         ],
       ),
-    );;
+      body: Container(
+        width: MediaQuery.of(context).size.width, 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            showProgress
+                ? CircularProgressIndicator(
+                    color: ui.primaryclr,
+                  )
+                :
+            textgenerator('No Past Medicines Found', 20, 'Lato', 300, ui.greyclr),
+          ],
+        ),
+      ) 
+    );
   }
 }

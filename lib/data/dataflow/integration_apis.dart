@@ -61,14 +61,16 @@ Future<dynamic> patientsinfo() async {
 
 Future<dynamic> doctorinfofromstorage() async {
   try {
-    final doctor = await StorageManager.readData("doctor_basic_info");
-    if (doctor == null) {
+    final doctor = jsonDecode(await StorageManager.readData("doctor_basic_info"));
+    if (doctor == '') {
+    print("doctor storage: ");
       return "";
-    } else{
+    } else {
+      print("doctor info from storage: " + doctor.toString());
       return doctor;
     }
   } catch (er) {
-    log("error here " + er.toString());
+    print("error here " + er.toString());
     return "";
   }
 }
@@ -141,13 +143,15 @@ Future<Map?> doctordetails() async {
     //     (await StorageManager.readData('current_hospital_id')).toString();
     // log("Initialised Profile get for: " + token);
     final response = await get(
-        Uri.parse('https://meditransparency.onrender.com/doctor/profiledetails'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader: "Bearer $token",
-          'Content-Type': 'application/json; charset=UTF-8',
-        },);
+      Uri.parse('https://meditransparency.onrender.com/doctor/profiledetails'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Bearer $token",
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
     final Map output = jsonDecode(response.body);
     // log("doctor profile details: " + output.toString());
+
     return output;
   } catch (er) {
     log("error caught: in patients list " + er.toString());
@@ -174,12 +178,13 @@ Future<Map?> patientdetails() async {
     //     (await StorageManager.readData('current_hospital_id')).toString();
     // log("Initialised Profile get for: " + token);
     final response = await post(
-        Uri.parse('https://meditransparency.onrender.com/doctor/patient/profiledetails'),
+        Uri.parse(
+            'https://meditransparency.onrender.com/doctor/patient/profiledetails'),
         headers: <String, String>{
           HttpHeaders.authorizationHeader: "Bearer $token",
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body:jsonEncode(<String, String>{"patientid": patientid}));
+        body: jsonEncode(<String, String>{"patientid": patientid}));
     final Map output = jsonDecode(response.body);
     // log("doctor profile details: " + output.toString());
     return output;
@@ -197,12 +202,13 @@ Future<Map?> medicalrecords() async {
     //     (await StorageManager.readData('current_hospital_id')).toString();
     // log("Initialised Profile get for: " + token);
     final response = await post(
-        Uri.parse('https://meditransparency.onrender.com/doctor/patient/medicalhistory'),
+        Uri.parse(
+            'https://meditransparency.onrender.com/doctor/patient/medicalhistory'),
         headers: <String, String>{
           HttpHeaders.authorizationHeader: "Bearer $token",
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body:jsonEncode(<String, String>{"p_id": patientid}));
+        body: jsonEncode(<String, String>{"p_id": patientid}));
     final Map output = jsonDecode(response.body);
     // log("doctor profile details: " + output.toString());
     return output;

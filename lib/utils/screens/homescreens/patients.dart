@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'dart:developer';
+import 'package:meditransparency/data/constants/colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:meditransparency/data/dataflow/integration_apis.dart';
@@ -70,13 +71,23 @@ class _patientState extends State<patient> {
                       SizedBox(
                         height: 10,
                       ),
-                      CircleAvatar(
-                        radius: 62,
-                        backgroundColor: ui.greyclr,
+                      InkWell(
+                        onLongPress: (){
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const editprofile()),
+                          // );
+                        
+                        },
                         child: CircleAvatar(
-                          radius: 60,
-                          backgroundImage: CachedNetworkImageProvider(
-                            snapshot.data["imgurl"],
+                          radius: 62,
+                          backgroundColor: ui.greyclr,
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage: CachedNetworkImageProvider(
+                              snapshot.data["imgurl"],
+                            ),
                           ),
                         ),
                       ),
@@ -311,7 +322,7 @@ class _patientState extends State<patient> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const CircularProgressIndicator(),
+                                      CircularProgressIndicator(color: ui.primaryclr,),
                                     ],
                                   ));
                             }
@@ -338,7 +349,7 @@ class _patientState extends State<patient> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CircularProgressIndicator(),
+                      CircularProgressIndicator(color: ui.primaryclr,),
                     ],
                   ));
             }
@@ -387,7 +398,7 @@ Widget buildItem(Map data) {
               fit: BoxFit.cover, // Set the fit property to cover
               width: 150, // Set the width of the container
               height: 150,
-                placeholder: (context, url) => Container(height:100,width:100, child: CircularProgressIndicator()),
+                placeholder: (context, url) => Container(height:100,width:100, child: CircularProgressIndicator(color: ui.primaryclr,)),
                 errorWidget: (context, url, error) => Icon(Icons.error),),
             ),
           ),
@@ -399,3 +410,17 @@ Widget buildItem(Map data) {
       ),
     );
   }
+
+  class editprofile extends StatefulWidget {
+  const editprofile({super.key});
+
+  @override
+  State<editprofile> createState() => _editprofileState();
+}
+
+class _editprofileState extends State<editprofile> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
