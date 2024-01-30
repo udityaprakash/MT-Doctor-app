@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
+
 class medicines extends StatefulWidget {
   const medicines({super.key});
 
