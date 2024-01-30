@@ -3,6 +3,7 @@ import 'package:meditransparency/data/dataflow/integration_apis.dart';
 import 'package:meditransparency/utils/screens/homescreen/homescreen.dart';
 import 'package:meditransparency/utils/screens/intro_screen.dart';
 import 'package:meditransparency/data/constants/colors.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 
 import '../homescreens/listofhospitals.dart';
 
@@ -26,7 +27,7 @@ class _home_page_redirectorState extends State<home_page_redirector> {
           return listhospitals();
         } else {
           return Scaffold(
-            body: Center(child: CircularProgressIndicator(color: ui.primaryclr,)),
+            body: Center(child:loading()),
           );
         }
       },

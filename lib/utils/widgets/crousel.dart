@@ -28,8 +28,29 @@ Widget buildCarousel(List<Offer> offers) {
             margin: EdgeInsets.symmetric(horizontal: 5),
             child: Image.network(
               offers[index].offerUrl,
+              cacheHeight: 500,
               fit: BoxFit.cover,
-            ),
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              // Image is fully loaded
+              return child;
+            } else {
+              // Image is still loading, show a loader
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: ui.primaryclr,
+                  backgroundColor: ui.loadingbackgroundclr,
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                      : null,
+                ),
+              );
+            }
+          },
+        ),
+            // ),
+            
           );
         },
         options: CarouselOptions(

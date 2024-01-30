@@ -51,9 +51,7 @@ class _medicinesState extends State<medicines> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             showProgress
-                ? CircularProgressIndicator(
-                    color: ui.primaryclr,
-                  )
+                ? loading()
                 :
             textgenerator('No Past Medicines Found', 20, 'Lato', 300, ui.greyclr),
           ],

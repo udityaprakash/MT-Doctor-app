@@ -32,7 +32,7 @@ class privacy_policy extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.only(left:20,top: 20),
-                child: textgenerator(terms, 15, 'Lato', 300, ui.greyclr),
+                child: textasitis(terms, 15, 'Lato', 300, ui.greyclr),
               ),
               
             ],

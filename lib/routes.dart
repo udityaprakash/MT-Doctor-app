@@ -26,11 +26,10 @@ class CustomRoute {
         return NoConnectionScreen();
       }
       switch (settings.name) {
-        case "/splashpage":
-          // ignore: prefer_const_constructors
-          return SplashScreen();
         case "/":
-          break;
+          return SplashScreen();
+        // case "/":
+        //   break;
         case "/featurescreen":
           return Homepage();
         case '/privacy_policy':
@@ -58,7 +57,7 @@ class CustomRoute {
 
       }
       log("Settings name: "+(settings.name).toString());
-      return Homepage();
+      return NoConnectionScreen();
       // ignore: prefer_const_constructors
     });
   }

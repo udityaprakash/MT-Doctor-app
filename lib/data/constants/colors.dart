@@ -9,4 +9,5 @@ class ui {
   static Color blackclr = Color.fromARGB(255, 0, 0, 0);
   static Color greyclr = Color.fromARGB(66, 0, 0, 0);
   static Color errclr = Color.fromARGB(113, 255, 0, 0);
+  static Color loadingbackgroundclr = Color.fromARGB(255, 229, 229, 229);
 }

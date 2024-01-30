@@ -7,10 +7,15 @@ Widget Inputpassfield(String hinttxt, bool _passwordVisible, context, funct,
     // initialValue: 'Input text',
     controller: controller,
     obscuringCharacter: '*',
-    style: TextStyle(color: Colors.black, ),
+    style: TextStyle(color: ui.blackclr, ),
+    cursorColor: ui.primaryclr ,
     decoration: InputDecoration(
       isDense: true,
       focusColor: ui.primaryclr,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: BorderSide(width:2, color: ui.primaryclr),
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
         borderSide: BorderSide(color: ui.primaryclr),

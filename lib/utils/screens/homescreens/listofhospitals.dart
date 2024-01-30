@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/data/dataflow/devicestorage.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +18,8 @@ class Hospital {
   final String name;
   final String hospitalid;
 
-  Hospital({required this.imgUrl, required this.hospitalid, required this.name});
+  Hospital(
+      {required this.imgUrl, required this.hospitalid, required this.name});
 
   factory Hospital.fromJson(Map<String, dynamic> json) {
     return Hospital(
@@ -94,83 +96,118 @@ class _listhospitalsState extends State<listhospitals> {
                     height: 20,
                   ),
                   Expanded(
-                    child: FutureBuilder<List<Hospital>>(
-                      future: ApiService.getHospitalDetails(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<Hospital>? data = snapshot.data;
-                          if(snapshot.data!.isNotEmpty){
-                            return ListView.builder(
-                              itemCount: data!.length,
-                              itemBuilder: (context, index) {
-                                hospitals.add(data[index].hospitalid);
-                                return InkWell(
-                                  onTap: () {
-                                    selectedindex = index;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    // color: Colors.red,
-                                    margin: EdgeInsets.all(10),
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      // color: const Color.fromARGB(255, 219, 27, 27),
-                                      border: (selectedindex == index)
-                                          ? Border.all(
-                                              color: ui.primaryclr, width: 2)
-                                          : Border.all(color: ui.greyclr),
-                                    ),
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // CachedNetworkImage(imageUrl: imageUrl),
-                                          CircleAvatar(
-                                            radius: 30,
-                                            backgroundColor: ui.greyclr,
-                                            child: CircleAvatar(
+                    child: RefreshIndicator(
+                      onRefresh: () {
+                        setState(() {
+                          ApiService.getHospitalDetails();
+                        });
+                        return Future.delayed(Duration(seconds: 2));
+                      },
+                      child: FutureBuilder<List<Hospital>>(
+                        future: ApiService.getHospitalDetails(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<Hospital>? data = snapshot.data;
+                            if (snapshot.data!.isNotEmpty) {
+                              return ListView.builder(
+                                itemCount: data!.length,
+                                itemBuilder: (context, index) {
+                                  hospitals.add(data[index].hospitalid);
+                                  return InkWell(
+                                    onTap: () {
+                                      selectedindex = index;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      // color: Colors.red,
+                                      margin: EdgeInsets.all(10),
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        // color: const Color.fromARGB(255, 219, 27, 27),
+                                        border: (selectedindex == index)
+                                            ? Border.all(
+                                                color: ui.primaryclr, width: 2)
+                                            : Border.all(color: ui.greyclr),
+                                      ),
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            // CachedNetworkImage(imageUrl: imageUrl),
+                                            CircleAvatar(
                                               radius: 30,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                data[index].imgUrl,
+                                              backgroundColor: ui.greyclr,
+                                              child: CircleAvatar(
+                                                radius: 30,
+                                                backgroundImage:
+                                                    CachedNetworkImageProvider(
+                                                  data[index].imgUrl,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          textgenerator(
-                                              (data[index].name).toUpperCase(),
-                                              15,
-                                              'Lato',
-                                              300,
-                                              ui.blackclr),
-                                          SizedBox(
-                                            width: 5,
-                                          )
-                                        ]),
+                                            textgenerator(
+                                                (data[index].name)
+                                                    .toUpperCase(),
+                                                15,
+                                                'Lato',
+                                                300,
+                                                ui.blackclr),
+                                            SizedBox(
+                                              width: 5,
+                                            )
+                                          ]),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(
+                                  child: textgenerator('No hospitals to list',
+                                      15, 'Lato', 300, ui.primarylightclr));
+                            }
+                          } else if (snapshot.hasError) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                text(
+                                  "Failed to load. Please ",
+                                  ui.greyclr,
+                                  15,
+                                  FontWeight.w500,
+                                ),
+                                InkWell(
+                                  child: text(
+                                    " Retry",
+                                    ui.primarylightclr,
+                                    12,
+                                    FontWeight.w500,
                                   ),
-                                );
-                              },
+                                  onTap: () {
+                                    setState(() {});
+                                  },
+                                )
+                              ],
                             );
-
-                          }else{
-                            return Center(child: textgenerator('No hospitals to list', 15 , 'Lato', 300, ui.primarylightclr));
+                            // return textgenerator('Failed to load. Please retry', 15 , 'Lato', 300, ui.primarylightclr);
+                          } else {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                ),
+                                Container(
+                                    height: 40,
+                                    // width: 40,
+                                    child: loading()),
+                              ],
+                            );
                           }
-                        } else if (snapshot.hasError) {
-                          return textgenerator('Failed to load. Please retry', 15 , 'Lato', 300, ui.primarylightclr);
-                        } else {
-                          return Column(
-                            children: [
-                              SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                child: CircularProgressIndicator()),
-                            ],
-                          );
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ]),
@@ -184,19 +221,17 @@ class _listhospitalsState extends State<listhospitals> {
           child: buttongenerator('Continue', context, () async {
             if (selectedindex == null) {
               log('something is missing');
-              if(hospitals.length!=0){
-
-              Toastmsg(msg: 'Please select a hospital');
-              }else{
-              Toastmsg(msg: 'This App is Useless for You');
-
+              if (hospitals.length != 0) {
+                Toastmsg(msg: 'Please select a hospital');
+              } else {
+                Toastmsg(msg: 'This App is Useless for You');
               }
             } else {
               // print(hospitals[selectedindex]);
               StorageManager.saveData(
                   'current_hospital_id', hospitals[selectedindex]);
-              StorageManager.readData('current_hospital_id').then((value){
-                print("stored hospital id was :"+value);
+              StorageManager.readData('current_hospital_id').then((value) {
+                print("stored hospital id was :" + value);
                 Navigator.pushNamed(context, '/choosepatient');
               });
             }

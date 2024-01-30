@@ -35,7 +35,7 @@ class Termsofuse extends StatelessWidget {
               // textgenerator('Terms and Conditions', MediaQuery.of(context).size.width/15, 'poppins', 300, redclr),
               Container(
                 margin: EdgeInsets.only(left:20,top: 20),
-                child: textgenerator(terms, 15, 'Lato', 300, ui.greyclr),
+                child: textasitis(terms, 15, 'Lato', 300, ui.greyclr),
               ),
               
             ],

@@ -6,6 +6,7 @@ import 'package:meditransparency/data/dataflow/models/loginmodel.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
 import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/utils/widgets/inputfields/inputtextfield.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 
 import '../../../data/dataflow/integration_apis.dart';
 import '../../widgets/inputfields/inputpassfield.dart';
@@ -74,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   align: TextAlign.center),
               _iserr
                   ? SizedBox(
-                      height: 30,
+                      height: 20,
                     )
                   : SizedBox(
                       height: 0,
@@ -132,11 +133,18 @@ class _SignInScreenState extends State<SignInScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  text(
-                    "Forget Password ?",
-                    ui.primarylightclr,
-                    15,
-                    FontWeight.w500,
+                  InkWell(
+                    onTap:_isloading? (){} : (){
+                      final snackBar = SnackBar(
+                          content: Text('Forgot password is Disabled for Doctors'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    child: text(
+                      "Forget Password ?",
+                      ui.primarylightclr,
+                      15,
+                      FontWeight.w500,
+                    ),
                   )
                 ],
               ),
@@ -144,7 +152,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 height: 30,
               ),
               _isloading
-                  ? CircularProgressIndicator(color: ui.primaryclr,)
+                  ? loading()
                   : nextorcontinuebtn(
                       context: context,
                       tex: 'Next',
@@ -200,73 +208,78 @@ class _SignInScreenState extends State<SignInScreen> {
                           setState(() {});
                         }
                       }),
+              _isloading ? SizedBox(height: 150) : 
+              Column(
+                children: [
               Padding(
-                padding: const EdgeInsets.only(top: 45.0),
-                child: Row(children: <Widget>[
-                  Expanded(
-                      child: Divider(
-                    color: ui.greyclr,
-                    thickness: 1.5,
-                  )),
-                  Text(
-                    " Or sign in with ",
-                    style: TextStyle(color: Colors.black38),
-                  ),
-                  Expanded(
-                      child: Divider(
-                    color: ui.greyclr,
-                    thickness: 1.5,
-                  )),
-                ]),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      child: SvgPicture.asset(
-                        'assets/svgs/google.svg',
-                      ),
-                      onTap: () {
-                        _handleSignIn();
-                      },
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SvgPicture.asset(
-                      'assets/svgs/facebook.svg',
-                    ),
-                  ],
+              padding: const EdgeInsets.only(top: 45.0),
+              child: Row(children: <Widget>[
+                Expanded(
+                    child: Divider(
+                  color: ui.greyclr,
+                  thickness: 1.5,
+                )),
+                Text(
+                  " Or sign in with ",
+                  style: TextStyle(color: Colors.black38),
                 ),
+                Expanded(
+                    child: Divider(
+                  color: ui.greyclr,
+                  thickness: 1.5,
+                )),
+              ]),
+                            ),
+                            Padding(
+              padding: const EdgeInsets.only(top: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    child: SvgPicture.asset(
+                      'assets/svgs/google.svg',
+                    ),
+                    onTap: () {
+                      _handleSignIn();
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SvgPicture.asset(
+                    'assets/svgs/facebook.svg',
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    text(
-                      "Don’t have an account? ",
-                      Colors.black,
+                            ),
+                            Padding(
+              padding: const EdgeInsets.only(top: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  text(
+                    "Don’t have an account? ",
+                    ui.blackclr,
+                    12,
+                    FontWeight.w500,
+                  ),
+                  InkWell(
+                    child: text(
+                      " Sign Up",
+                      ui.primarylightclr,
                       12,
                       FontWeight.w500,
                     ),
-                    InkWell(
-                      child: text(
-                        " Sign Up",
-                        ui.primarylightclr,
-                        12,
-                        FontWeight.w500,
-                      ),
-                      onTap: () {
-                        final snackBar = SnackBar(
-                            content: Text('Signup is not Allowed for Doctors'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                    )
-                  ],
-                ),
+                    onTap: () {
+                      final snackBar = SnackBar(
+                          content: Text('Signup is not Allowed for Doctors'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                  )
+                ],
+              ),
+                            )
+                ],
               )
             ],
           ),

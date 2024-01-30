@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.2.2
   cached_network_image: ^3.3.0
   carousel_slider: ^4.0.0
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +88,9 @@ flutter:
     - assets/svgs/laboratorysuffix.svg
     - assets/svgs/medicinesuffix.svg
     - assets/svgs/live-streaming.svg
+    - assets/lottie/loader.json
+    - assets/lottie/nodata.json
+    - assets/lottie/person.json
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

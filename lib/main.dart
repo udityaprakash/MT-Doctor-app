@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       create: (context) => ConnectivityProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/splashpage',
+        initialRoute: '/',
     
         onGenerateRoute: CustomRoute.allRoutes,
         theme:

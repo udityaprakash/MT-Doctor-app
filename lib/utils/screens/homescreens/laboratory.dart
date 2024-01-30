@@ -81,9 +81,7 @@ String displayText = '';
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             showProgress
-                ? CircularProgressIndicator(
-                    color: ui.primaryclr,
-                  )
+                ? loading()
                 :
             textgenerator('No Lab Tests Found', 20, 'Lato', 300, ui.greyclr),
           ],

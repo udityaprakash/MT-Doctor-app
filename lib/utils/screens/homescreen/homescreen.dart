@@ -7,6 +7,7 @@ import 'package:meditransparency/data/constants/colors.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:meditransparency/data/dataflow/devicestorage.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 import 'package:meditransparency/utils/widgets/toastmsg.dart';
 import '../../../data/dataflow/integration_apis.dart';
 import '../../widgets/card generator/homepagecards.dart';
@@ -66,11 +67,13 @@ class _homepageState extends State<homepage> {
 
   // final Future<dynamic> doctor = doctorinfofromstorage();
   final List<String> menuOptions = [
+    'Home',
     'Appointments',
     'Balance',
     'Notifications',
     'Help Center',
-    'Feedback'
+    'Feedback',
+    'Logout'	
   ];
   int _selectedIndex = 0;
 
@@ -170,7 +173,9 @@ class _homepageState extends State<homepage> {
                       return textgenerator('Unknown', 20, 'Lato', 300,
                           ui.blackclr); // Display an error message if an error occurs
                     }
-                    return CircularProgressIndicator(color: ui.primaryclr,);
+                    return Padding( 
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child:loading());
                   },
                 ),
               )
@@ -215,11 +220,24 @@ class _homepageState extends State<homepage> {
                       itemCount: menuOptions.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            Toastmsg(
-                                msg: "Options has been disabled by the Admin");
-                            // Navigator.pop(context); // Close the drawer
+                          onTap: () async {
+                            // // Navigator.pop(context); // Close the drawer
+                            if(index == 6){
                             _navigateTo(index);
+                            await StorageManager.deleteAllSharedPreferencesData();
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/featurescreen');
+                            }else if(index == 0){
+                              _navigateTo(index);
+                              // Navigator.pushNamed(context, '/homepage');
+                            }
+                            else{
+
+                            Toastmsg(msg: "Options has been disabled by the Admin");
+                              }
                           },
                           child: Container(
                             padding: EdgeInsets.all(16.0),
@@ -330,7 +348,7 @@ class _homepageState extends State<homepage> {
                         return textgenerator('Unknown', 20, 'Lato', 300,
                             ui.blackclr); // Display an error message if an error occurs
                       } else {
-                        return CircularProgressIndicator(color: ui.primaryclr,);
+                        return loading();
                       }
                     },
                   )

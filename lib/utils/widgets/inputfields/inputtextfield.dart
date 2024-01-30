@@ -10,20 +10,20 @@ Widget Inputnumfield(String hinttxt, context, funct,
     autofocus: autofocus,
     keyboardType: TextInputType.phone,
     style: TextStyle(
-      color: Colors.black,
+      color: ui.blackclr,
     ),
+    cursorColor: ui.primaryclr,
     decoration: InputDecoration(
       isDense: true,
-      focusColor: ui.primaryclr,
+      focusColor: ui.errclr,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: BorderSide(width:2, color: ui.primaryclr),
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
         borderSide: BorderSide(color: ui.primaryclr),
       ),
-      // suffixIcon: IconButton(
-      //   icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility,
-      //       color: ui.greyclr),
-      //   onPressed: funct,
-      // ),
-    ), // Set this to true to hide the entered password
+    ),
   );
 }

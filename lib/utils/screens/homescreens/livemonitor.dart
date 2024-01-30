@@ -52,9 +52,7 @@ class _livemonitorState extends State<livemonitor> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             showProgress
-                ? CircularProgressIndicator(
-                    color: ui.primaryclr,
-                  )
+                ? loading()
                 :
             textgenerator('No Cameras were Detected', 20, 'Lato', 300, ui.greyclr),
           ],

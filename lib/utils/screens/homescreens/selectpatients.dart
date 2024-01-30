@@ -9,6 +9,7 @@ import 'package:meditransparency/data/constants/colors.dart';
 import 'package:meditransparency/data/dataflow/devicestorage.dart';
 import 'package:meditransparency/data/dataflow/integration_apis.dart';
 import 'package:meditransparency/utils/widgets/button.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:meditransparency/utils/widgets/toastmsg.dart';
@@ -231,8 +232,8 @@ class _patientlistState extends State<patientlist> {
                               ),
                               Container(
                                   height: 40,
-                                  width: 40,
-                                  child: CircularProgressIndicator(color: ui.primaryclr,)),
+                                  // width: 40,
+                                  child: loading()),
                             ],
                           );
                         }
@@ -272,6 +273,5 @@ class _patientlistState extends State<patientlist> {
       ),
       // ),
     );
-    ;
   }
 }

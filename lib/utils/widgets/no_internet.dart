@@ -1,7 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meditransparency/data/constants/colors.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 
 class No_Internet extends StatelessWidget {
@@ -31,6 +33,15 @@ class _NoConnectionScreenState extends State<NoConnectionScreen> {
       child: Scaffold(
         body: Stack(
           children: [
+            // loading(),
+            Center(
+              child: Container(
+                // padding: EdgeInsets.all(20),
+                child: Lottie.asset(
+                'assets/lottie/person.json',
+                          ),
+              ),
+            ),
             // Image.asset('assets/images/error.png',
             //     fit: BoxFit.cover, height: double.infinity),
             Center(
@@ -38,8 +49,10 @@ class _NoConnectionScreenState extends State<NoConnectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  text("Please check your Internet Connection", ui.primaryclr,
-                                      22.0, FontWeight.w500,),
+                  textasitis("Please check your Internet",22.0,'Lato', 500, ui.primaryclr,
+                                      ),
+                  textasitis("Connection",22.0,'Lato', 500, ui.primaryclr,
+                                      ),                    
                   // Text('No Internet', context),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 6,

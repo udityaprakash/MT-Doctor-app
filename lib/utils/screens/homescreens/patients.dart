@@ -5,6 +5,7 @@ import 'package:meditransparency/data/constants/colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:meditransparency/data/dataflow/integration_apis.dart';
+import 'package:meditransparency/utils/widgets/loader.dart';
 import 'package:meditransparency/utils/widgets/reusable_text.dart';
 
 // int calculateAge(String dobString) {
@@ -322,7 +323,7 @@ class _patientState extends State<patient> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      CircularProgressIndicator(color: ui.primaryclr,),
+                                      loading(),
                                     ],
                                   ));
                             }
@@ -349,7 +350,7 @@ class _patientState extends State<patient> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: ui.primaryclr,),
+                      loading(),
                     ],
                   ));
             }
@@ -398,7 +399,7 @@ Widget buildItem(Map data) {
               fit: BoxFit.cover, // Set the fit property to cover
               width: 150, // Set the width of the container
               height: 150,
-                placeholder: (context, url) => Container(height:100,width:100, child: CircularProgressIndicator(color: ui.primaryclr,)),
+                placeholder: (context, url) => Container(height:100,width:100, child: loading()),
                 errorWidget: (context, url, error) => Icon(Icons.error),),
             ),
           ),
