@@ -4,7 +4,7 @@ import 'package:meditransparency/utils/widgets/reusable_text.dart';
 
 Widget btn({tex, function, style, context}) {
   final style = ElevatedButton.styleFrom(
-      primary: ui.primaryclr,
+      backgroundColor: ui.primaryclr,
       elevation: 3,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20)),
@@ -25,7 +25,7 @@ Widget btn({tex, function, style, context}) {
 
 Widget nextorcontinuebtn({tex, function, style, context}) {
   final style = ElevatedButton.styleFrom(
-      primary: ui.primaryclr,
+      backgroundColor: ui.primaryclr,
       elevation: 3,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(1400)),
@@ -48,7 +48,7 @@ Widget buttongenerator(String quote, BuildContext context, function) {
   return ElevatedButton(
     onPressed: function,
     style: ElevatedButton.styleFrom(
-      primary: ui.primaryclr,
+      backgroundColor: ui.primaryclr,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
         // side: const BorderSide(
