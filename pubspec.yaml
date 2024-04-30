@@ -73,7 +73,7 @@ flutter:
     - assets/imagess/logo.png
     - assets/imagess/laboratory.png
     - assets/imagess/medicine.png
-    - assets/imagess/patient.png
+    - assets/imagess/Patient.png
     - assets/imagess/livemonitor.png
 
     - assets/svgs/aplogo.svg
